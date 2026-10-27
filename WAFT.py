@@ -397,7 +397,7 @@ def NRCan_WAFT(
             # Save as shapefile
             shapename = (
                 f"{WEA_name}{depth_suffix}_parr-{parallel_D[spacing]}_perp-{perpendicular_D[spacing]}"
-                f"_wd-{wind_dir}_sd-{interconnect_dir}_buff-{buffer}_{turbine_name}_points.gpkg"
+                f"_wd-{wind_dir}_sd-{interconnect_dir}_buff-{buffer}_{turbine_name}_turbines.gpkg"
             )
         
             shape_file = os.path.join(turbine_shapefile_location, shapename)      
@@ -469,12 +469,13 @@ def NRCan_WAFT(
             # Plot holes if any
             for interior in WEA_xy.interiors:
                 ix, iy = interior.xy
-                plt.plot(ix, iy, color='black', label='Hole')
+                plt.plot(ix, iy, color='black')
         else:
             # MultiPolygon
-            for poly in WEA_xy.geoms:
+            for i, poly in enumerate(WEA_xy.geoms):
                 x, y = poly.exterior.xy
-                plt.plot(x, y, color='black')
+                label = 'WEA Boundary' if i == 0 else None
+                plt.plot(x, y, color='black', label=label)
                 # Plot holes
                 for interior in poly.interiors:
                     ix, iy = interior.xy
@@ -562,13 +563,13 @@ def NRCan_WAFT(
         # Save to CSV
         df_characteristics.to_csv(csv_file, index=False)
 
-        # Indicate where files are saved to if the corresponding save options are enabled
-        if save_layout_fig == 'Yes':
-            print(f"Layout figures saved to: {layout_fig_location}")
-        if save_turbine_shapefile == 'Yes':
-            print(f"Turbine shapefiles saved to: {turbine_shapefile_location}")
-        if save_farm_characteristics == 'Yes':
-            print(f"Farm characteristics saved to: {farm_characteristics_location}")
+    # Indicate where files are saved to if the corresponding save options are enabled
+    if save_layout_fig == 'Yes':
+        print(f"Layout figures saved to: {layout_fig_location}")
+    if save_turbine_shapefile == 'Yes':
+        print(f"Turbine shapefiles saved to: {turbine_shapefile_location}")
+    if save_farm_characteristics == 'Yes':
+        print(f"Farm characteristics saved to: {farm_characteristics_location}")
 
 NRCan_WAFT(turbine_name, turbine_cap, turbine_D, wind_dir, interconnect_dir, parallel_D, perpendicular_D, stagger, farm_max_cap, buffer, WEA_location, 
            WEA_name, save_layout_fig, layout_fig_location, save_turbine_shapefile, turbine_shapefile_location, flip_starting_corner, save_farm_characteristics, farm_characteristics_location, WEA_depth)

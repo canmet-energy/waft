@@ -408,7 +408,7 @@ def NRCan_WAFT(
         ## Calculate wind farm characteristics
         farm_capacity = np.array(N) * turbine_cap
         energy_density =  np.round(15 / ((parallel_spacing /1000) * (perpendicular_spacing / 1000)), decimals=1)
-        WEA_capacity = np.round(((np.sum(parcel_area)) + (np.sum(buffer_areas))) / WEA_area * 100, decimals=1)
+        WEA_capacity = np.round(((np.sum(parcel_area)) + (np.sum(buffer_areas[:-1]))) / WEA_area * 100, decimals=1)
         
         # Store scenario characteristics
         scenario_data = {

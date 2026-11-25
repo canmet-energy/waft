@@ -94,7 +94,7 @@ def NRCan_WAFT(
 
     def project_polygon(poly):
         # Exterior
-        ext = np.array(poly.exterior.coords)
+        ext = np.array(poly.exterior.coords)[:, :2]
         ext_temp = ext - coord_mins
     
         ext_xy = np.zeros_like(ext_temp)
@@ -104,7 +104,7 @@ def NRCan_WAFT(
         # Holes
         hole_xy_list = []
         for hole in poly.interiors:
-            hole_arr = np.array(hole.coords)
+            hole_arr = np.array(hole.coords)[:, :2]
             hole_temp = hole_arr - coord_mins
     
             hole_xy = np.zeros_like(hole_temp)

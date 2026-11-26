@@ -19,7 +19,7 @@ from shapely.ops import unary_union
 # Turbine parameters
 turbine_name = 'Turbine A' # Wind turbine that turbine_cap and turbine_D correspond to
 turbine_cap = 10 # Max capacity of the selected wind turbine in MW
-turbine_D = 100 # Rotor diameter of the selected wind turbine in m
+turbine_D = 160 # Rotor diameter of the selected wind turbine in m
 
 # WEA parameters
 wind_dir = 200 # The direction the prevailing wind is coming from in degrees (will decide how parcels are cut)
@@ -29,12 +29,12 @@ WEA_name = 'Test WEA' # For file naming
 WEA_depth = '-30m' # For file naming of offshore wind farms (indicate maximum depth e.g. '-30m' for offshore, or None for onshore)
 
 # Layout parameters
-parallel_D = [2, 6]  # Number of turbine diameters each farm row (parallel to prevailing wind direction) will be spaced (can enter multiple in list format [x, y, z, ...])
-perpendicular_D = [2, 4] # Number of turbine diameters each farm column (perpendicular to prevailing wind direction) will be spaced
+parallel_D = [4, 6]  # Number of turbine diameters each farm row (parallel to prevailing wind direction) will be spaced (can enter multiple in list format [x, y, z, ...])
+perpendicular_D = [4, 4] # Number of turbine diameters each farm column (perpendicular to prevailing wind direction) will be spaced
 stagger = 'Yes' #Yes to stagger every other row, No to keep a uniform grid
 
 # Farm parameters
-farm_max_cap = [2000, 2500, 3000] # Max capacity of each wind farm in MW (will be rounded up to nearest full turbine). The size of this list will decide the number of farms (can enter multiple in list format [x, y, z, ...])
+farm_max_cap = [2000, 1000, 1000] # Max capacity of each wind farm in MW (will be rounded up to nearest full turbine). The size of this list will decide the number of farms (can enter multiple in list format [x, y, z, ...])
 buffer = 5000 # Buffer between wind farms in m
 
 # Output parameters
@@ -407,7 +407,7 @@ def NRCan_WAFT(
         
         ## Calculate wind farm characteristics
         farm_capacity = np.array(N) * turbine_cap
-        energy_density =  np.round(15 / ((parallel_spacing /1000) * (perpendicular_spacing / 1000)), decimals=1)
+        energy_density =  np.round(turbine_cap / ((parallel_spacing /1000) * (perpendicular_spacing / 1000)), decimals=1)
         WEA_capacity = np.round(((np.sum(parcel_area)) + (np.sum(buffer_areas[:-1]))) / WEA_area * 100, decimals=1)
         
         # Store scenario characteristics
